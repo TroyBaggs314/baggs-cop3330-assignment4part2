@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.ToDoListController">
+   <children>
+      <ScrollBar fx:id="sc" blockIncrement="5.0" orientation="VERTICAL" unitIncrement="10.0" visibleAmount="20.0" StackPane.alignment="CENTER_RIGHT" />
+      <Button fx:id="addListButton" mnemonicParsing="false" onMouseClicked="#addListClicked" text="Add List" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="removeListButton" mnemonicParsing="false" onMouseClicked="#removeListClicked" text="Remove List" translateX="59.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="editListTitleButton" mnemonicParsing="false" onMouseClicked="#editListTitleClicked" text="Edit List Title" translateX="139.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="importButton" mnemonicParsing="false" onMouseClicked="#importListClicked" text="Import" translateX="222.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="exportButton" mnemonicParsing="false" onMouseClicked="#exportListClicked" text="Export" translateX="274.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="showAllButton" mnemonicParsing="false" onMouseClicked="#allListsClicked" text="All" translateX="324.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="showCompleteButton" mnemonicParsing="false" onMouseClicked="#completeListClicked" text="Complete" translateX="354.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="showIncompleteButton" mnemonicParsing="false" onMouseClicked="#incompleteListClicked" text="Incomplete" translateX="422.0" StackPane.alignment="TOP_LEFT" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="TODO" wrappingWidth="58.2421875" StackPane.alignment="TOP_RIGHT">
+         <font>
+            <Font name="Calibri" size="24.0" />
+         </font>
+         <StackPane.margin>
+            <Insets right="20.0" top="45.0" />
+         </StackPane.margin>
+      </Text>
+      <TextField fx:id="userInput" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="165.0" promptText="Enter list info" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="498.0" />
+         </StackPane.margin>
+      </TextField>
+      <Accordion fx:id="accordion" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="613.0" prefWidth="589.0" translateY="238.0" StackPane.alignment="BOTTOM_LEFT">
+        <panes>
+          <TitledPane animated="false" prefHeight="163.0" prefWidth="569.0" text="Example Title 1">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView editable="true" layoutX="24.0" layoutY="-1.0" prefHeight="139.0" prefWidth="551.0">
+                          <columns>
+                            <TableColumn prefWidth="85.0" text="Date" />
+                            <TableColumn prefWidth="478.0" text="Desc" />
+                          </columns>
+                        </TableView>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                        <CheckBox layoutX="6.0" layoutY="52.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="16.0" wrapText="true" />
+                        <CheckBox layoutX="6.0" layoutY="79.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="16.0" wrapText="true" />
+                        <CheckBox layoutX="6.0" layoutY="106.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="16.0" wrapText="true" />
+                        <CheckBox layoutX="6.0" layoutY="29.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="16.0" wrapText="true" />
+                        <ScrollBar layoutX="574.0" layoutY="1.0" orientation="VERTICAL" prefHeight="128.0" prefWidth="14.0" />
+                     </children></AnchorPane>
+            </content>
+          </TitledPane>
+          <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 2">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+            </content>
+          </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 3">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 4">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+          <TitledPane animated="false" prefHeight="310.0" prefWidth="556.0" text="Example 5">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="312.0" prefWidth="598.0" />
+            </content>
+          </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 6">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 7">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 8">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 9">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 10">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 11">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 12">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 13">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 14">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 15">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 16">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 17">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="289.0" prefWidth="600.0" text="Example 18">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="107.0" prefWidth="589.0" text="Example 19">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="543.0" />
+               </content>
+            </TitledPane>
+        </panes>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </Accordion>
+   </children>
+</StackPane>
