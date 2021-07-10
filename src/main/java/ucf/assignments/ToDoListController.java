@@ -5,20 +5,28 @@
 
 package ucf.assignments;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import java.awt.*;
 import javafx.event.ActionEvent;
+import javafx.scene.layout.AnchorPane;
+
+import java.lang.management.PlatformLoggingMXBean;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -28,7 +36,6 @@ public class ToDoListController implements Initializable {
     public void initialize(URL url, ResourceBundle rb)
     {
         ToDoLists.scrollWheelSetup(sc,accordion);
-        System.out.println(accordion.translateYProperty().getValue());
     }
 
     @FXML
@@ -80,9 +87,23 @@ public class ToDoListController implements Initializable {
     @FXML
     void addToListClicked(MouseEvent actionEvent)
     {
-        //prompt user for item name, date, and desc
+        //create default index title pane
         //increase size of index by one
-        //accordion.getPanes().add()
+        javafx.scene.control.CheckBox cb = new javafx.scene.control.CheckBox("");
+        AnchorPane ap = new AnchorPane();
+        ap.getChildren().add(cb);
+        cb.setLayoutX(14);
+        cb.setLayoutY(6);
+        TextField tf = new TextField();
+        ap.getChildren().add(tf);
+        tf.promptTextProperty().set("YYYY/MM/DD");
+        tf.setLayoutX(45);
+        tf.setOnKeyPressed(this::editDateOfItemClicked);
+        tf.setId("TF" + accordion.getPanes().size());
+        TitledPane pane = new TitledPane();
+        pane.setText("New Entry");
+        pane.setContent(ap);
+        accordion.getPanes().add(pane);
         ToDoLists.refreshAccordion(accordion,1);
         ToDoLists.scrollWheelSetup(sc,accordion);
     }
@@ -91,7 +112,6 @@ public class ToDoListController implements Initializable {
     {
         //change userInput prompt description to "index of entry to remove"
         //remove index if valid
-        System.out.println(userInput.getText() + " " + accordion.getPanes().size());
         accordion.getPanes().remove(Integer.parseInt(userInput.getText()) - 1);
         ToDoLists.refreshAccordion(accordion,-1);
     }
@@ -142,14 +162,87 @@ public class ToDoListController implements Initializable {
         //set class.desc to user prompt
     }
     @FXML
-    void editDateOfItemClicked(MouseEvent actionEvent)
+    void editDateOfItemClicked(KeyEvent actionEvent)
     {
-        //change userInput prompt description to "index of entry to edit"
-        //get user prompt  for entry index to edit
-        //if index exists, ask user for new date
-        //if date is valid gregorian date then continue
+        //check if date is valid gregorian date then continue
         //if isn't valid prompt again
         //set class.date to user prompt at prompted index
+        //System.out.println(actionEvent.getCode());
+        final Node source = (Node)actionEvent.getSource();
+        String id = source.getId();
+        Scene scene = source.getScene();
+        TextField tf = (TextField) scene.lookup("#" + id);
+        //System.out.println(tf.getId() + " " + tf.getText() + "\t" + replaceHolder);
+        tf.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+                if(newValue.length() > 0)
+                {
+                    if (!Character.isDigit(newValue.charAt(newValue.length() - 1)) && newValue.charAt(newValue.length() - 1) != '/' && newValue.length() <=10) {
+                        Platform.runLater(() ->
+                        {
+                            tf.clear();
+                        });
+                    }
+                    else if(newValue.length() > 10)
+                    {
+                        tf.deletePreviousChar();
+                    }
+                    for(int i = 0; i < newValue.length(); i++)
+                    {
+                        if(i <= 3 && !Character.isDigit(newValue.charAt(i)))
+                        {
+                            Platform.runLater(() ->
+                            {
+                                tf.clear();
+                            });
+                        }
+                        else if((i == 4 || i == 7) && newValue.charAt(i) != '/')
+                        {
+                            Platform.runLater(() ->
+                            {
+                                tf.clear();
+                            });
+                        }
+                        else if((i > 4 && i !=7) && !Character.isDigit(newValue.charAt(i)))
+                        {
+                            Platform.runLater(() ->
+                            {
+                                tf.clear();
+                            });                        }
+                        else if(i == 5 && Integer.parseInt(String.valueOf(newValue.charAt(5))) > 1)
+                        {
+                            Platform.runLater(() ->
+                            {
+                                tf.clear();
+                            });
+                        }
+                        else if(i == 6 && Integer.parseInt(String.valueOf(newValue.charAt(5))) == 1  && Integer.parseInt(String.valueOf(newValue.charAt(6))) > 2)
+                        {
+                            Platform.runLater(() ->
+                            {
+                                tf.clear();
+                            });
+                        }
+                        else if(i == 9 && Character.isDefined(newValue.charAt(9)))
+                        {
+                            int day = Integer.parseInt(String.valueOf(newValue.charAt(8))) * 10 + Integer.parseInt(String.valueOf(newValue.charAt(9)));
+                            if(day > 31)
+                            {
+                                Platform.runLater(() ->
+                                {
+                                    tf.clear();
+                                });
+
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+
     }
     @FXML
     void markCompleteClicked(MouseEvent actionEvent)

@@ -57,8 +57,7 @@ public class ToDoLists extends Application {
         {
             public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val)
             {
-                System.out.println(25 + -(accordion.getHeight()) * ((sc.valueProperty().doubleValue()/100)));
-                accordion.setTranslateY(25 + -(accordion.getHeight()) * ((sc.valueProperty().doubleValue()/100)));
+                accordion.setTranslateY(25 + -(accordion.getHeight()) * ((sc.valueProperty().doubleValue() / 100)));
             }
         });
     }

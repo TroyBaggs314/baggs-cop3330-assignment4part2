@@ -7,6 +7,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,20 +17,15 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.ToDoListController">
    <children>
-      <Button fx:id="addToListButton" mnemonicParsing="false" onMouseClicked="#addToListClicked" text="Add Item" StackPane.alignment="TOP_LEFT" />
-      <Button fx:id="removeFromListButton" mnemonicParsing="false" onMouseClicked="#removeFromListClicked" text="Remove Item" translateX="66.0" StackPane.alignment="TOP_LEFT" />
-      <Button fx:id="importButton" mnemonicParsing="false" onMouseClicked="#importListClicked" text="Import" translateX="322.0" StackPane.alignment="TOP_LEFT" />
-      <Button fx:id="exportButton" mnemonicParsing="false" onMouseClicked="#exportListClicked" text="Export" translateX="374.0" StackPane.alignment="TOP_LEFT" />
-      <Button fx:id="showAllButton" mnemonicParsing="false" onMouseClicked="#allItemsClicked" text="All" translateX="424.0" StackPane.alignment="TOP_LEFT" />
-      <Button fx:id="showCompleteButton" mnemonicParsing="false" onMouseClicked="#completeItemsClicked" text="Complete" translateX="454.0" StackPane.alignment="TOP_LEFT" />
-      <Button fx:id="showIncompleteButton" mnemonicParsing="false" onMouseClicked="#incompleteItemsClicked" text="Incomplete" translateX="522.0" StackPane.alignment="TOP_LEFT" />
       <Accordion fx:id="accordion" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="642.0" prefWidth="719.0" translateY="25.0" StackPane.alignment="TOP_LEFT">
         <panes>
           <TitledPane animated="false" prefHeight="163.0" prefWidth="569.0" text="Example Title 1">
                <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="137.0" prefWidth="601.0">
                      <children>
-                        <CheckBox layoutX="14.0" layoutY="14.0" mnemonicParsing="false" />
+                        <CheckBox layoutX="14.0" layoutY="6.0" mnemonicParsing="false" />
+                        <TextArea layoutX="45.0" layoutY="32.0" prefHeight="134.0" prefWidth="627.0" promptText="Enter a description here." />
+                        <TextField layoutX="45.0" onInputMethodTextChanged="#editDateOfItemClicked" prefHeight="32.0" prefWidth="149.0" promptText="YYYY/MM/DD" />
                      </children>
                   </AnchorPane>
                </content>
@@ -129,6 +125,13 @@
             <Insets />
          </StackPane.margin>
       </Accordion>
+      <Button fx:id="addToListButton" mnemonicParsing="false" onMouseClicked="#addToListClicked" text="Add Item" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="removeFromListButton" mnemonicParsing="false" onMouseClicked="#removeFromListClicked" text="Remove Item" translateX="66.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="importButton" mnemonicParsing="false" onMouseClicked="#importListClicked" text="Import" translateX="322.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="exportButton" mnemonicParsing="false" onMouseClicked="#exportListClicked" text="Export" translateX="374.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="showAllButton" mnemonicParsing="false" onMouseClicked="#allItemsClicked" text="All" translateX="424.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="showCompleteButton" mnemonicParsing="false" onMouseClicked="#completeItemsClicked" text="Complete" translateX="454.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="showIncompleteButton" mnemonicParsing="false" onMouseClicked="#incompleteItemsClicked" text="Incomplete" translateX="522.0" StackPane.alignment="TOP_LEFT" />
       <Button fx:id="clearItemButton" mnemonicParsing="false" onMouseClicked="#clearListClicked" text="Clear Items" translateX="246.0" StackPane.alignment="TOP_LEFT" />
       <ScrollBar fx:id="sc" blockIncrement="5.0" orientation="VERTICAL" unitIncrement="10.0" visibleAmount="20.0" StackPane.alignment="CENTER_RIGHT" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="TODO" wrappingWidth="58.2421875" StackPane.alignment="TOP_RIGHT">
