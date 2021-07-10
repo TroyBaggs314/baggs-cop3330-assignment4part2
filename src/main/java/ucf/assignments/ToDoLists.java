@@ -6,10 +6,13 @@
 package ucf.assignments;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.ScrollBar;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -35,22 +38,37 @@ public class ToDoLists extends Application {
         primaryStage.show();
     }
 
-    /*public Accordion refreshAccordion(Accordion a) //only use if changing the size of an existing accordion doesn't affect its arrangement correctly
+    public static Accordion refreshAccordion(Accordion a, int i)
     {
-        Accordion temp = new Accordion();
-        for(int i = 0; i < a.getPanes().size(); i++)
+        if(i == 1)
         {
-            temp.getPanes().set(i,a.getPanes().get(i));
+            a.setPrefHeight(a.getPrefHeight() + 25);
         }
-        return temp;
-    }*/
+        else if( i == -1)
+        {
+            a.setPrefHeight(a.getPrefHeight() - 25);
+        }
+        return a;
+    }
 
+    public static void scrollWheelSetup(ScrollBar sc, Accordion accordion)
+    {
+        sc.valueProperty().addListener(new ChangeListener<Number>()
+        {
+            public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val)
+            {
+                System.out.println(25 + -(accordion.getHeight()) * ((sc.valueProperty().doubleValue()/100)));
+                accordion.setTranslateY(25 + -(accordion.getHeight()) * ((sc.valueProperty().doubleValue()/100)));
+            }
+        });
+    }
 
     /*public ArrayList<itemFormat> parse(File file)
     {
         //use string parse of format title string goes here in the firstline\n yyyymmdd item description goes here and is one long string that nextLine() can eat up easily\n yyyymmdd etc.
         fill in new ArrayList<itemFormat> iF;
     }*/
+
 
 
 

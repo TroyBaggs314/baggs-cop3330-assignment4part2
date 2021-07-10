@@ -1,0 +1,43 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+
+class ToDoLists
+{
+    main()
+    start()
+}
+
+class ToDoListController
+{
+    /'addListClicked()
+    removeListClicked()
+    editListTitleClicked()'/
+    addToListClicked()
+    removeFromListClicked()
+    clearListClicked()
+    editNameOfItemClicked()
+    editDescOfItemClicked()
+    editDateOfItemClicked()
+    markCompleteClicked()
+    allItemsClicked()
+    incompleteItemsClicked()
+    completeItemsClicked()
+    exportListClicked()
+    importListClicked()
+    'needs readme.md'
+}
+
+class itemFormat
+{
+    name
+    desc
+    completed
+    -index
+}
+
+javafx.Application <|-- ToDoLists
+ToDoLists - ToDoListController
+ToDoLists - itemFormat
+
+@enduml
