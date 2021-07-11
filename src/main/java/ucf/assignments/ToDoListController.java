@@ -283,7 +283,8 @@ public class ToDoListController implements Initializable {
             CheckBox tempCB = (CheckBox) scene.lookup("#CB" + i);
             if(tempCB != null)
             {
-                tempCB.getParent().visibleProperty().set(true);
+                tempCB.getParent().getParent().getParent().visibleProperty().set(true);
+                tempCB.getParent().getParent().getParent().setManaged(true);
             }
         }
     }
@@ -301,15 +302,13 @@ public class ToDoListController implements Initializable {
             CheckBox tempCB = (CheckBox) scene.lookup("#CB" + i);
             if(tempCB != null && tempCB.selectedProperty().get() == false)
             {
-                System.out.println("Setting invisible");
-                tempCB.getParent().visibleProperty().set(false);
-                tempCB.getParent().setManaged(false);
+                tempCB.getParent().getParent().getParent().visibleProperty().set(false);
+                tempCB.getParent().getParent().getParent().setManaged(false);
             }
             if(tempCB != null && tempCB.selectedProperty().get() == true)
             {
-                System.out.println("Setting visible");
-                tempCB.getParent().visibleProperty().set(true);
-                tempCB.getParent().setManaged(false);
+                tempCB.getParent().getParent().getParent().visibleProperty().set(true);
+                tempCB.getParent().getParent().getParent().setManaged(true);
             }
 
         }
@@ -320,6 +319,24 @@ public class ToDoListController implements Initializable {
         //increment through all entries of expanded accordion pane
         //if entry class.complete = true then disable it
         //if disabling an entry in an accordion doesn't revaluate the height then use refreshAccordion()
+        for(int i = 0; i < accordion.getPanes().size(); i++)
+        {
+            final Node source = (Node)actionEvent.getSource();
+            Scene scene = source.getScene();
+            CheckBox tempCB = (CheckBox) scene.lookup("#CB" + i);
+            if(tempCB != null && tempCB.selectedProperty().get() == false)
+            {
+                tempCB.getParent().getParent().getParent().visibleProperty().set(true);
+                tempCB.getParent().getParent().getParent().setManaged(true);
+            }
+            if(tempCB != null && tempCB.selectedProperty().get() == true)
+            {
+                tempCB.getParent().getParent().getParent().visibleProperty().set(false);
+                tempCB.getParent().getParent().getParent().setManaged(false);
+            }
+
+        }
+
     }
 
     @FXML
