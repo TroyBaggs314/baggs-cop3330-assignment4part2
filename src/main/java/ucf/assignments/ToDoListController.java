@@ -28,9 +28,15 @@ import javax.swing.event.MenuEvent;
 import java.awt.*;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.util.Pair;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.lang.management.PlatformLoggingMXBean;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ToDoListController implements Initializable {
@@ -81,18 +87,19 @@ public class ToDoListController implements Initializable {
 
 
     @FXML
-    void addToListClicked(MouseEvent actionEvent)
+    Pair<TextField,TextArea> addToListClicked()
     {
         //create default index title pane
         //increase size of index by one
         javafx.scene.control.CheckBox cb = new javafx.scene.control.CheckBox("");
         cb.setId("CB" + maxAccCount);
-        System.out.println("Created #CB" + maxAccCount);
-        AnchorPane ap = new AnchorPane();
-        ap.getChildren().add(cb);
+        //System.out.println("Created #CB" + maxAccCount);
         cb.setLayoutX(14);
         cb.setLayoutY(25);
         TextField tf = new TextField();
+        tf.setId("TF" + maxAccCount);
+        AnchorPane ap = new AnchorPane();
+        ap.getChildren().add(cb);
         ap.getChildren().add(tf);
         tf.promptTextProperty().set("YYYY/MM/DD");
         tf.setLayoutX(45);
@@ -100,7 +107,7 @@ public class ToDoListController implements Initializable {
         tf.setPrefHeight(32);
         tf.setPrefWidth(149);
         tf.setOnKeyPressed(this::editDateOfItemClicked);
-        tf.setId("TF" + maxAccCount);
+        //System.out.println("Created #TF" + maxAccCount);
         TitledPane pane = new TitledPane();
         javafx.scene.control.TextArea ta = new TextArea();
         ap.getChildren().add(ta);
@@ -115,6 +122,7 @@ public class ToDoListController implements Initializable {
         accordion.getPanes().add(pane);
         ToDoLists.refreshAccordion(accordion,1);
         ToDoLists.scrollWheelSetup(sc,accordion);
+        return new Pair<>(tf,ta);
     }
     @FXML
     void removeFromListClicked(MouseEvent actionEvent)
@@ -126,6 +134,13 @@ public class ToDoListController implements Initializable {
     }
     @FXML
     void clearListClicked(MouseEvent actionEvent)
+    {
+        //remove all indexes
+        accordion.getPanes().clear();
+        ToDoLists.refreshAccordion(accordion,0);
+        maxAccCount = 0;
+    }
+    void clearListClicked()
     {
         //remove all indexes
         accordion.getPanes().clear();
@@ -183,7 +198,7 @@ public class ToDoListController implements Initializable {
     }
 
     @FXML
-    void editNameOfItemClicked(MouseEvent actionEvent)
+    void editNameOfItemClicked()
     {
         //change userInput prompt description to "index of entry to edit"
         //get user prompt  for entry index to edit
@@ -213,15 +228,37 @@ public class ToDoListController implements Initializable {
             userInput.promptTextProperty().set("Invalid input, try again.");
         }
     }
-
-    @FXML
-    void editDescOfItemClicked(MouseEvent actionEvent)
+    void editNameOfItemClicked(int sentIndex,String input)
     {
         //change userInput prompt description to "index of entry to edit"
         //get user prompt  for entry index to edit
         //if index exists, ask user for new title
         //if doesn't exist prompt again
         //set class.desc to user prompt
+        //System.out.println(userInput.getText() + " " + accordion.getPanes().size());
+        if(sentIndex >= 0 && sentIndex <= accordion.getPanes().size() && accordion.getPanes().size() > 0)
+        {
+            accordion.getPanes().get(sentIndex).setText(input);
+            userInput.clear();
+            userInput.promptTextProperty().set("Press a button.");
+        }
+        else
+        {
+            userInput.clear();
+            userInput.promptTextProperty().set("Invalid input, try again.");
+        }
+    }
+
+
+    @FXML
+    void editDescOfItemClicked(String input, TextArea ta)
+    {
+        //change userInput prompt description to "index of entry to edit"
+        //get user prompt  for entry index to edit
+        //if index exists, ask user for new title
+        //if doesn't exist prompt again
+        //set class.desc to user prompt
+        ta.setText(input);
     }
     @FXML
     void editDateOfItemClicked(KeyEvent actionEvent)
@@ -306,6 +343,17 @@ public class ToDoListController implements Initializable {
 
 
     }
+
+    @FXML
+    void editDateOfItemClicked(String input, TextField tf)
+    {
+        //check if date is valid gregorian date then continue
+        //if isn't valid prompt again
+        //set class.date to user prompt at prompted index
+        //System.out.println(actionEvent.getCode());
+        tf.setText(input);
+    }
+
     @FXML
     void markCompleteClicked(MouseEvent actionEvent)
     {
@@ -342,7 +390,6 @@ public class ToDoListController implements Initializable {
             final Node source = (Node)actionEvent.getSource();
             Scene scene = source.getScene();
             CheckBox tempCB = (CheckBox) scene.lookup("#CB" + i);
-            System.out.println("Checking #CB" + i);
             if(tempCB != null && tempCB.selectedProperty().get() == false)
             {
                 tempCB.getParent().getParent().getParent().visibleProperty().set(false);
@@ -384,11 +431,77 @@ public class ToDoListController implements Initializable {
     {
         //get to path through file explorer (or if have to; ask for path)
         //load file as File and send to parse
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Saved List");
+        final Node source = (Node)actionEvent.getSource();
+        Scene scene = source.getScene();
+        File file = fileChooser.showOpenDialog(scene.getWindow());
+        try
+        {
+            arrayToList(ToDoLists.parse(file,actionEvent),actionEvent);
+        }
+        catch (Exception e)
+        {
+            userInput.promptTextProperty().set("Error retrieving file.");
+        }
     }
+
+    void arrayToList(ArrayList<itemFormat> arr, MouseEvent actionEvent)
+    {
+        for(int i = 0; i < arr.size(); i++)
+        {
+            Pair<TextField,TextArea> pair = addToListClicked();
+            editNameOfItemClicked(i,arr.get(i).title);
+            editDateOfItemClicked(arr.get(i).date,pair.getKey());
+            editDescOfItemClicked(arr.get(i).desc,pair.getValue());
+        }
+    }
+
+    void listToFile(File file)
+    {
+        System.out.println("Starting");
+        try
+        {
+            FileWriter writer = new FileWriter(file);
+            System.out.println(accordion.getPanes().size() + "\n");
+            writer.write(accordion.getPanes().size() + "\n");
+            for(int i = 0; i < accordion.getPanes().size(); i++)
+            {
+                //Checkbox cb = (Checkbox) accordion.getChildrenUnmodifiable().get(i);
+                Scene scene = accordion.getPanes().get(i).getChildrenUnmodifiable().get(1).getScene();
+                CheckBox tempCB = (CheckBox) scene.lookup("#CB" + i);
+                TextField tempTF = (TextField) scene.lookup("TF" + i);
+                //System.out.println("TF" + i + " is " + tempTF);
+                if(tempCB.selectedProperty().get() == false)
+                {
+                    writer.write("x");
+                }
+                else
+                {
+                    writer.write("y");
+                }
+                //writer.write(accordion.getPanes().get(i).getText()); //titles
+            }
+            //writer.close();
+        }
+        catch (Exception e)
+        {
+            userInput.promptTextProperty().set("Error saving file.");
+        }
+
+    }
+
     @FXML
     void exportListClicked(MouseEvent actionEvent)
     {
         //get to save path through file explorer (or if have to; ask for path)
         //save as txt or json
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save to drive");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Files", "*.*"));
+        final Node source = (Node)actionEvent.getSource();
+        Scene scene = source.getScene();
+        File file = fileChooser.showSaveDialog(scene.getWindow());
+        listToFile(file);
     }
 }
