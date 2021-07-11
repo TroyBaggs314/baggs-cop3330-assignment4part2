@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.skin.TitledPaneSkin;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -438,6 +439,7 @@ public class ToDoListController implements Initializable {
         File file = fileChooser.showOpenDialog(scene.getWindow());
         try
         {
+            clearListClicked();
             arrayToList(ToDoLists.parse(file,actionEvent),actionEvent);
         }
         catch (Exception e)
@@ -451,6 +453,19 @@ public class ToDoListController implements Initializable {
         for(int i = 0; i < arr.size(); i++)
         {
             Pair<TextField,TextArea> pair = addToListClicked();
+            Scene scene = accordion.getScene();
+            //CheckBox tempCB = (CheckBox) scene.lookup("#CB" + i);
+            AnchorPane ap = (AnchorPane) accordion.getPanes().get(i).getContent();
+            CheckBox tempCB = (CheckBox) ap.getChildren().get(0);
+            if(arr.get(i).complete == true)
+            {
+                tempCB.selectedProperty().set(true);
+            }
+            else
+            {
+                tempCB.selectedProperty().set(false);
+            }
+
             editNameOfItemClicked(i,arr.get(i).title);
             editDateOfItemClicked(arr.get(i).date,pair.getKey());
             editDescOfItemClicked(arr.get(i).desc,pair.getValue());
@@ -459,19 +474,18 @@ public class ToDoListController implements Initializable {
 
     void listToFile(File file)
     {
-        System.out.println("Starting");
+        //System.out.println("Starting");
         try
         {
             FileWriter writer = new FileWriter(file);
-            System.out.println(accordion.getPanes().size() + "\n");
             writer.write(accordion.getPanes().size() + "\n");
             for(int i = 0; i < accordion.getPanes().size(); i++)
             {
-                //Checkbox cb = (Checkbox) accordion.getChildrenUnmodifiable().get(i);
-                Scene scene = accordion.getPanes().get(i).getChildrenUnmodifiable().get(1).getScene();
+                Scene scene = accordion.getPanes().get(i).getChildrenUnmodifiable().get(0).getScene();
                 CheckBox tempCB = (CheckBox) scene.lookup("#CB" + i);
-                TextField tempTF = (TextField) scene.lookup("TF" + i);
-                //System.out.println("TF" + i + " is " + tempTF);
+                AnchorPane ap = (AnchorPane) accordion.getPanes().get(i).getContent();
+                TextField tf = (TextField) ap.getChildren().get(1);
+                TextArea ta = (TextArea) ap.getChildren().get(2);
                 if(tempCB.selectedProperty().get() == false)
                 {
                     writer.write("x");
@@ -480,9 +494,11 @@ public class ToDoListController implements Initializable {
                 {
                     writer.write("y");
                 }
-                //writer.write(accordion.getPanes().get(i).getText()); //titles
+                writer.write(accordion.getPanes().get(i).getText() +"_\n"); //titles
+                writer.write(tf.getText() + "_\n");
+                writer.write(ta.getText() + "_\n");
             }
-            //writer.close();
+            writer.close();
         }
         catch (Exception e)
         {
