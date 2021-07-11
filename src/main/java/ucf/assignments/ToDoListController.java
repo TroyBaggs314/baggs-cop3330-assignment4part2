@@ -10,15 +10,18 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.control.CheckBox;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -54,7 +57,7 @@ public class ToDoListController implements Initializable {
     private Button removeFromListButton;
 
     @FXML
-    private MenuItem editItemTitleButton;
+    private Button editItemTitleButton;
 
     @FXML
     private Button importButton;
@@ -75,34 +78,37 @@ public class ToDoListController implements Initializable {
     private Button clearItemButton;
 
 
-    /*@FXML
-    void editListTitleClicked(MouseEvent actionEvent)
-    {
-        //change userInput prompt description to "index of entry to edit"
-        //get user prompt  for entry index to edit
-        //if index exists, ask user for new title
-            //if doesn't exist prompt again
-        //set class.title to user prompt at prompted index
-    }*/
     @FXML
     void addToListClicked(MouseEvent actionEvent)
     {
         //create default index title pane
         //increase size of index by one
         javafx.scene.control.CheckBox cb = new javafx.scene.control.CheckBox("");
+        cb.setId("CB" + accordion.getPanes().size());
         AnchorPane ap = new AnchorPane();
         ap.getChildren().add(cb);
         cb.setLayoutX(14);
-        cb.setLayoutY(6);
+        cb.setLayoutY(25);
         TextField tf = new TextField();
         ap.getChildren().add(tf);
         tf.promptTextProperty().set("YYYY/MM/DD");
         tf.setLayoutX(45);
+        tf.setLayoutY(19);
+        tf.setPrefHeight(32);
+        tf.setPrefWidth(149);
         tf.setOnKeyPressed(this::editDateOfItemClicked);
         tf.setId("TF" + accordion.getPanes().size());
         TitledPane pane = new TitledPane();
+        javafx.scene.control.TextArea ta = new TextArea();
+        ap.getChildren().add(ta);
+        ta.promptTextProperty().set("Enter a description here.");
+        ta.setLayoutX(45);
+        ta.setLayoutY(51);
+        ta.setPrefHeight(134);
+        ta.setPrefWidth(627);
         pane.setText("New Entry");
         pane.setContent(ap);
+
         accordion.getPanes().add(pane);
         ToDoLists.refreshAccordion(accordion,1);
         ToDoLists.scrollWheelSetup(sc,accordion);
@@ -119,6 +125,8 @@ public class ToDoListController implements Initializable {
     void clearListClicked(MouseEvent actionEvent)
     {
         //remove all indexes
+        accordion.getPanes().clear();
+        ToDoLists.refreshAccordion(accordion,0);
     }
 
     @FXML
@@ -133,7 +141,7 @@ public class ToDoListController implements Initializable {
     }
 
     @FXML
-    void editNameOfItemClicked(ActionEvent actionEvent)
+    void editNameOfItemClicked(MouseEvent actionEvent)
     {
         //change userInput prompt description to "index of entry to edit"
         //get user prompt  for entry index to edit
@@ -143,13 +151,25 @@ public class ToDoListController implements Initializable {
         //System.out.println(userInput.getText() + " " + accordion.getPanes().size());
         String sub = userInput.getText();
         String post = userInput.getText();
-        int i;
+        int i = 0;
         i = userInput.getText().indexOf('/') + 1;
-        sub = sub.substring(0,i-1);
-        post = post.substring(i);
-        int index = Integer.parseInt(sub);
-        accordion.getPanes().get(index-1).setText(post);
-        userInput.promptTextProperty().set("Press a button.");
+        int index = -1;
+        if(i > 1)
+        {
+            sub = sub.substring(0, i - 1);
+            post = post.substring(i);
+            index = Integer.parseInt(sub);
+        }
+        if(index > 0 && index <= accordion.getPanes().size() && accordion.getPanes().size() > 0)
+        {
+            accordion.getPanes().get(index - 1).setText(post);
+            userInput.promptTextProperty().set("Press a button.");
+        }
+        else
+        {
+            userInput.clear();
+            userInput.promptTextProperty().set("Invalid input, try again.");
+        }
     }
 
     @FXML
@@ -256,6 +276,16 @@ public class ToDoListController implements Initializable {
         //increment through all entries of expanded accordion pane
         //enable it
         //if enabling an entry in an accordion doesn't revaluate the height then use refreshAccordion()
+        for(int i = 0; i < accordion.getPanes().size(); i++)
+        {
+            final Node source = (Node)actionEvent.getSource();
+            Scene scene = source.getScene();
+            CheckBox tempCB = (CheckBox) scene.lookup("#CB" + i);
+            if(tempCB != null)
+            {
+                tempCB.getParent().visibleProperty().set(true);
+            }
+        }
     }
 
     @FXML
@@ -264,6 +294,25 @@ public class ToDoListController implements Initializable {
         //increment through all entries of expanded accordion pane
         //if entry class.complete = false then disable it
         //if disabling an entry in an accordion doesn't revaluate the height then use refreshAccordion()
+        for(int i = 0; i < accordion.getPanes().size(); i++)
+        {
+            final Node source = (Node)actionEvent.getSource();
+            Scene scene = source.getScene();
+            CheckBox tempCB = (CheckBox) scene.lookup("#CB" + i);
+            if(tempCB != null && tempCB.selectedProperty().get() == false)
+            {
+                System.out.println("Setting invisible");
+                tempCB.getParent().visibleProperty().set(false);
+                tempCB.getParent().setManaged(false);
+            }
+            if(tempCB != null && tempCB.selectedProperty().get() == true)
+            {
+                System.out.println("Setting visible");
+                tempCB.getParent().visibleProperty().set(true);
+                tempCB.getParent().setManaged(false);
+            }
+
+        }
     }
     @FXML
     void incompleteItemsClicked(MouseEvent actionEvent)

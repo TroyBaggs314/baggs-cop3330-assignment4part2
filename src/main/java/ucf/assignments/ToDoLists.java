@@ -44,6 +44,10 @@ public class ToDoLists extends Application {
         {
             a.setPrefHeight(a.getPrefHeight() + 25);
         }
+        else if(i == 0)
+        {
+            a.setPrefHeight(167);
+        }
         else if( i == -1)
         {
             a.setPrefHeight(a.getPrefHeight() - 25);
