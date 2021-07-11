@@ -10,12 +10,10 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.ToDoListController">
    <children>
-      <Accordion fx:id="accordion" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="642.0" prefWidth="719.0" translateY="25.0" StackPane.alignment="TOP_LEFT">
+      <Accordion fx:id="accordion" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="642.0" prefWidth="786.0" translateY="25.0" StackPane.alignment="TOP_LEFT">
         <panes>
           <TitledPane prefHeight="163.0" prefWidth="569.0" text="Example Title 1">
                <content>
@@ -123,24 +121,16 @@
             <Insets />
          </StackPane.margin>
       </Accordion>
-      <Button fx:id="addToListButton" mnemonicParsing="false" onMouseClicked="#addToListClicked" text="Add Item" StackPane.alignment="TOP_LEFT" />
-      <Button fx:id="removeFromListButton" mnemonicParsing="false" onMouseClicked="#removeFromListClicked" text="Remove Item" translateX="66.0" StackPane.alignment="TOP_LEFT" />
-      <Button fx:id="importButton" mnemonicParsing="false" onMouseClicked="#importListClicked" text="Import" translateX="322.0" StackPane.alignment="TOP_LEFT" />
-      <Button fx:id="exportButton" mnemonicParsing="false" onMouseClicked="#exportListClicked" text="Export" translateX="374.0" StackPane.alignment="TOP_LEFT" />
-      <Button fx:id="showAllButton" mnemonicParsing="false" onMouseClicked="#allItemsClicked" text="All" translateX="424.0" StackPane.alignment="TOP_LEFT" />
-      <Button fx:id="showCompleteButton" mnemonicParsing="false" onMouseClicked="#completeItemsClicked" text="Complete" translateX="454.0" StackPane.alignment="TOP_LEFT" />
-      <Button fx:id="showIncompleteButton" mnemonicParsing="false" onMouseClicked="#incompleteItemsClicked" text="Incomplete" translateX="522.0" StackPane.alignment="TOP_LEFT" />
-      <Button fx:id="clearItemButton" mnemonicParsing="false" onMouseClicked="#clearListClicked" text="Clear Items" translateX="246.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="addToListButton" mnemonicParsing="false" onMouseClicked="#addToListClicked" onMouseEntered="#addRegistryEntered" onMouseExited="#editRegistryExited" text="Add Item" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="removeFromListButton" mnemonicParsing="false" onMouseClicked="#removeFromListClicked" onMouseEntered="#removeRegistryEntered" onMouseExited="#editRegistryExited" text="Remove Item" translateX="66.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="importButton" mnemonicParsing="false" onMouseClicked="#importListClicked" onMouseEntered="#importRegistryEntered" onMouseExited="#editRegistryExited" text="Import" translateX="301.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="exportButton" mnemonicParsing="false" onMouseClicked="#exportListClicked" onMouseEntered="#exportRegistryEntered" onMouseExited="#editRegistryExited" text="Export" translateX="353.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="showAllButton" mnemonicParsing="false" onMouseClicked="#allItemsClicked" onMouseEntered="#allRegistryEntered" onMouseExited="#editRegistryExited" text="All" translateX="403.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="showCompleteButton" mnemonicParsing="false" onMouseClicked="#completeItemsClicked" onMouseEntered="#completeRegistryEntered" onMouseExited="#editRegistryExited" text="Complete" translateX="433.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="showIncompleteButton" mnemonicParsing="false" onMouseClicked="#incompleteItemsClicked" onMouseEntered="#incompleteRegistryEntered" onMouseExited="#editRegistryExited" text="Incomplete" translateX="501.0" StackPane.alignment="TOP_LEFT" />
+      <Button fx:id="clearItemButton" mnemonicParsing="false" onMouseClicked="#clearListClicked" onMouseEntered="#clearRegistryEntered" onMouseExited="#editRegistryExited" text="Clear Items" translateX="225.0" StackPane.alignment="TOP_LEFT" />
       <ScrollBar fx:id="sc" blockIncrement="5.0" orientation="VERTICAL" unitIncrement="10.0" visibleAmount="20.0" StackPane.alignment="CENTER_RIGHT" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="TODO" wrappingWidth="58.2421875" StackPane.alignment="TOP_RIGHT">
-         <font>
-            <Font name="Calibri" size="24.0" />
-         </font>
-         <StackPane.margin>
-            <Insets right="20.0" top="45.0" />
-         </StackPane.margin>
-      </Text>
-      <TextField fx:id="userInput" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="188.0" promptText="Press a button." translateX="100.0" StackPane.alignment="TOP_LEFT">
+      <TextField fx:id="userInput" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="209.0" promptText="Press a button." translateX="79.0" StackPane.alignment="TOP_LEFT">
          <StackPane.margin>
             <Insets left="498.0" />
          </StackPane.margin>

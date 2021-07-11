@@ -77,6 +77,8 @@ public class ToDoListController implements Initializable {
     @FXML
     private Button clearItemButton;
 
+    public int maxAccCount = 0;
+
 
     @FXML
     void addToListClicked(MouseEvent actionEvent)
@@ -84,7 +86,8 @@ public class ToDoListController implements Initializable {
         //create default index title pane
         //increase size of index by one
         javafx.scene.control.CheckBox cb = new javafx.scene.control.CheckBox("");
-        cb.setId("CB" + accordion.getPanes().size());
+        cb.setId("CB" + maxAccCount);
+        System.out.println("Created #CB" + maxAccCount);
         AnchorPane ap = new AnchorPane();
         ap.getChildren().add(cb);
         cb.setLayoutX(14);
@@ -97,7 +100,7 @@ public class ToDoListController implements Initializable {
         tf.setPrefHeight(32);
         tf.setPrefWidth(149);
         tf.setOnKeyPressed(this::editDateOfItemClicked);
-        tf.setId("TF" + accordion.getPanes().size());
+        tf.setId("TF" + maxAccCount);
         TitledPane pane = new TitledPane();
         javafx.scene.control.TextArea ta = new TextArea();
         ap.getChildren().add(ta);
@@ -108,7 +111,7 @@ public class ToDoListController implements Initializable {
         ta.setPrefWidth(627);
         pane.setText("New Entry");
         pane.setContent(ap);
-
+        maxAccCount++;
         accordion.getPanes().add(pane);
         ToDoLists.refreshAccordion(accordion,1);
         ToDoLists.scrollWheelSetup(sc,accordion);
@@ -127,13 +130,52 @@ public class ToDoListController implements Initializable {
         //remove all indexes
         accordion.getPanes().clear();
         ToDoLists.refreshAccordion(accordion,0);
+        maxAccCount = 0;
     }
-
+    @FXML
+    void addRegistryEntered(MouseEvent mouseEvent)
+    {
+        userInput.promptTextProperty().set("Adds a new entry.");
+    }
+    @FXML
+    void removeRegistryEntered(MouseEvent mouseEvent)
+    {
+        userInput.promptTextProperty().set("Enter index to remove.");
+    }
     @FXML
     void editRegistryEntered(MouseEvent mouseEvent)
     {
-        userInput.promptTextProperty().set("Enter input here.");
+        userInput.promptTextProperty().set("Enter format: Index/Name");
     }
+    @FXML
+    void clearRegistryEntered(MouseEvent mouseEvent)
+    {
+        userInput.promptTextProperty().set("Removes every entry.");
+    }
+    @FXML
+    void importRegistryEntered(MouseEvent mouseEvent)
+    {
+        userInput.promptTextProperty().set("Imports a saved list.");
+    }
+    @FXML
+    void exportRegistryEntered(MouseEvent mouseEvent)
+    {
+        userInput.promptTextProperty().set("Exports a list for later use.");
+    }
+    @FXML
+    void allRegistryEntered(MouseEvent mouseEvent)
+    {
+        userInput.promptTextProperty().set("Displays all lists");
+    }
+    @FXML
+    void completeRegistryEntered(MouseEvent mouseEvent)
+    {
+        userInput.promptTextProperty().set("Displays only completed list");
+    }
+    @FXML
+    void incompleteRegistryEntered(MouseEvent mouseEvent)
+    {
+        userInput.promptTextProperty().set("Displays only incomplete list");    }
     @FXML
     void editRegistryExited(MouseEvent mouseEvent)
     {
@@ -276,7 +318,7 @@ public class ToDoListController implements Initializable {
         //increment through all entries of expanded accordion pane
         //enable it
         //if enabling an entry in an accordion doesn't revaluate the height then use refreshAccordion()
-        for(int i = 0; i < accordion.getPanes().size(); i++)
+        for(int i = 0; i < maxAccCount; i++)
         {
             final Node source = (Node)actionEvent.getSource();
             Scene scene = source.getScene();
@@ -295,11 +337,12 @@ public class ToDoListController implements Initializable {
         //increment through all entries of expanded accordion pane
         //if entry class.complete = false then disable it
         //if disabling an entry in an accordion doesn't revaluate the height then use refreshAccordion()
-        for(int i = 0; i < accordion.getPanes().size(); i++)
+        for(int i = 0; i < maxAccCount; i++)
         {
             final Node source = (Node)actionEvent.getSource();
             Scene scene = source.getScene();
             CheckBox tempCB = (CheckBox) scene.lookup("#CB" + i);
+            System.out.println("Checking #CB" + i);
             if(tempCB != null && tempCB.selectedProperty().get() == false)
             {
                 tempCB.getParent().getParent().getParent().visibleProperty().set(false);
@@ -310,7 +353,6 @@ public class ToDoListController implements Initializable {
                 tempCB.getParent().getParent().getParent().visibleProperty().set(true);
                 tempCB.getParent().getParent().getParent().setManaged(true);
             }
-
         }
     }
     @FXML
@@ -319,7 +361,7 @@ public class ToDoListController implements Initializable {
         //increment through all entries of expanded accordion pane
         //if entry class.complete = true then disable it
         //if disabling an entry in an accordion doesn't revaluate the height then use refreshAccordion()
-        for(int i = 0; i < accordion.getPanes().size(); i++)
+        for(int i = 0; i < maxAccCount; i++)
         {
             final Node source = (Node)actionEvent.getSource();
             Scene scene = source.getScene();
@@ -334,9 +376,7 @@ public class ToDoListController implements Initializable {
                 tempCB.getParent().getParent().getParent().visibleProperty().set(false);
                 tempCB.getParent().getParent().getParent().setManaged(false);
             }
-
         }
-
     }
 
     @FXML
