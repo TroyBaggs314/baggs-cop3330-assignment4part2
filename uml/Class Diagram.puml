@@ -6,25 +6,30 @@ class ToDoLists
 {
     main()
     start()
+    refreshAccordion()
+    scrollWheelSetup()
+    parse()
 }
 
 class ToDoListController
 {
-    /'addListClicked()
-    removeListClicked()
-    editListTitleClicked()'/
     addToListClicked()
     removeFromListClicked()
     clearListClicked()
     editNameOfItemClicked()
+    editNameOfItemClicked()
     editDescOfItemClicked()
+    editDateOfItemClicked()
     editDateOfItemClicked()
     markCompleteClicked()
     allItemsClicked()
-    incompleteItemsClicked()
     completeItemsClicked()
-    exportListClicked()
+    incompleteItemsClicked()
     importListClicked()
+    arrayToList()
+    ListToFile()
+    exportListClicked()
+    exportListClicked()
     'needs readme.md'
 }
 
@@ -39,5 +44,6 @@ class itemFormat
 javafx.Application <|-- ToDoLists
 ToDoLists - ToDoListController
 ToDoLists - itemFormat
+itemFormat - ToDoListController
 
 @enduml

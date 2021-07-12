@@ -33,11 +33,7 @@ public class ToDoLists extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("Duplicate.fxml"));
-
         Scene scene = new Scene(root);
-
-
-
         primaryStage.setTitle("TODO Lists");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -116,12 +112,11 @@ public class ToDoLists extends Application {
                             temp.desc += s.substring(0,s.length()) + "\n";
                         }
                     }
-                    //System.out.println(s.substring(0,s.length() - 1));
                 }while(s.charAt(s.length() - 1) != '_');
             }
             iF.add(i,temp);
-            //System.out.println(">" + iF.get(i).complete + "\n>" + iF.get(i).title + "\n" + ">" + iF.get(i).date + "\n" +">" + iF.get(i).desc);
         }
         return iF;
     }
+
 }

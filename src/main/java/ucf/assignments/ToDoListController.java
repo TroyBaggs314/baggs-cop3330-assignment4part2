@@ -10,32 +10,19 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.skin.TitledPaneSkin;
-import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.CheckBox;
-
-import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import java.awt.*;
-import javafx.event.ActionEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.util.Pair;
-
 import java.io.File;
 import java.io.FileWriter;
-import java.lang.management.PlatformLoggingMXBean;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -57,44 +44,16 @@ public class ToDoListController implements Initializable {
     @FXML
     private TextField userInput;
 
-    @FXML
-    private Button addToListButton;
-
-    @FXML
-    private Button removeFromListButton;
-
-    @FXML
-    private Button editItemTitleButton;
-
-    @FXML
-    private Button importButton;
-
-    @FXML
-    private Button exportButton;
-
-    @FXML
-    private Button showAllButton;
-
-    @FXML
-    private Button showCompleteButton;
-
-    @FXML
-    private Button showIncompleteButton;
-
-    @FXML
-    private Button clearItemButton;
-
     public int maxAccCount = 0;
 
 
     @FXML
     Pair<TextField,TextArea> addToListClicked()
     {
-        //create default index title pane
+        //create default settings of index title pane
         //increase size of index by one
         javafx.scene.control.CheckBox cb = new javafx.scene.control.CheckBox("");
         cb.setId("CB" + maxAccCount);
-        //System.out.println("Created #CB" + maxAccCount);
         cb.setLayoutX(14);
         cb.setLayoutY(25);
         TextField tf = new TextField();
@@ -108,7 +67,6 @@ public class ToDoListController implements Initializable {
         tf.setPrefHeight(32);
         tf.setPrefWidth(149);
         tf.setOnKeyPressed(this::editDateOfItemClicked);
-        //System.out.println("Created #TF" + maxAccCount);
         TitledPane pane = new TitledPane();
         javafx.scene.control.TextArea ta = new TextArea();
         ap.getChildren().add(ta);
@@ -206,7 +164,6 @@ public class ToDoListController implements Initializable {
         //if index exists, ask user for new title
         //if doesn't exist prompt again
         //set class.desc to user prompt
-        //System.out.println(userInput.getText() + " " + accordion.getPanes().size());
         String sub = userInput.getText();
         String post = userInput.getText();
         int i = 0;
@@ -236,7 +193,6 @@ public class ToDoListController implements Initializable {
         //if index exists, ask user for new title
         //if doesn't exist prompt again
         //set class.desc to user prompt
-        //System.out.println(userInput.getText() + " " + accordion.getPanes().size());
         if(sentIndex >= 0 && sentIndex <= accordion.getPanes().size() && accordion.getPanes().size() > 0)
         {
             accordion.getPanes().get(sentIndex).setText(input);
@@ -267,12 +223,10 @@ public class ToDoListController implements Initializable {
         //check if date is valid gregorian date then continue
         //if isn't valid prompt again
         //set class.date to user prompt at prompted index
-        //System.out.println(actionEvent.getCode());
         final Node source = (Node)actionEvent.getSource();
         String id = source.getId();
         Scene scene = source.getScene();
         TextField tf = (TextField) scene.lookup("#" + id);
-        //System.out.println(tf.getId() + " " + tf.getText() + "\t" + replaceHolder);
         tf.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable,
@@ -351,16 +305,9 @@ public class ToDoListController implements Initializable {
         //check if date is valid gregorian date then continue
         //if isn't valid prompt again
         //set class.date to user prompt at prompted index
-        //System.out.println(actionEvent.getCode());
         tf.setText(input);
     }
 
-    @FXML
-    void markCompleteClicked(MouseEvent actionEvent)
-    {
-        //when checkbox is clicked
-        //flip the status of the complete boolean so as to represent its status
-    }
     @FXML
     void allItemsClicked(MouseEvent actionEvent)
     {
@@ -432,21 +379,44 @@ public class ToDoListController implements Initializable {
     {
         //get to path through file explorer (or if have to; ask for path)
         //load file as File and send to parse
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Saved List");
-        final Node source = (Node)actionEvent.getSource();
-        Scene scene = source.getScene();
-        File file = fileChooser.showOpenDialog(scene.getWindow());
+        if(userInput.getText().isEmpty())
+        {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open Saved List");
+            final Node source = (Node) actionEvent.getSource();
+            Scene scene = source.getScene();
+            File file = fileChooser.showOpenDialog(scene.getWindow());
+            try {
+                clearListClicked();
+                arrayToList(ToDoLists.parse(file, actionEvent), actionEvent);
+            } catch (Exception e) {
+                userInput.promptTextProperty().set("Error retrieving file.");
+            }
+        }
+        else
+        {
+            importListClicked(actionEvent,userInput.getText());
+        }
+    }
+
+    @FXML
+    void importListClicked(MouseEvent actionEvent, String input)
+    {
+        //get to path through file explorer (or if have to; ask for path)
+        //load file as File and send to parse
         try
         {
-            clearListClicked();
-            arrayToList(ToDoLists.parse(file,actionEvent),actionEvent);
+            File file = new File(input);
+            arrayToList(ToDoLists.parse(file, actionEvent), actionEvent);
         }
         catch (Exception e)
         {
             userInput.promptTextProperty().set("Error retrieving file.");
         }
     }
+
+
+
 
     void arrayToList(ArrayList<itemFormat> arr, MouseEvent actionEvent)
     {
@@ -474,7 +444,6 @@ public class ToDoListController implements Initializable {
 
     void listToFile(File file)
     {
-        //System.out.println("Starting");
         try
         {
             FileWriter writer = new FileWriter(file);
@@ -508,16 +477,32 @@ public class ToDoListController implements Initializable {
     }
 
     @FXML
-    void exportListClicked(MouseEvent actionEvent)
-    {
+    void exportListClicked(MouseEvent actionEvent) {
         //get to save path through file explorer (or if have to; ask for path)
         //save as txt or json
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save to drive");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Files", "*.*"));
+        if (userInput.getText().isEmpty()) {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save to drive");
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Files", "*.*"));
+            final Node source = (Node) actionEvent.getSource();
+            Scene scene = source.getScene();
+            File file = fileChooser.showSaveDialog(scene.getWindow());
+            listToFile(file);
+        }
+        else
+        {
+           exportListClicked(actionEvent,userInput.getText());
+        }
+    }
+
+    void exportListClicked(MouseEvent actionEvent, String input)
+    {
+        //get to save path through file explorer (or if have to; ask for path)
+        //save as txt
         final Node source = (Node)actionEvent.getSource();
         Scene scene = source.getScene();
-        File file = fileChooser.showSaveDialog(scene.getWindow());
+        File file = new File("src/main/resources/ucf/assignments/savetest.txt");
         listToFile(file);
     }
+
 }

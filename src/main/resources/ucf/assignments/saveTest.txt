@@ -1,24 +1,7 @@
-7
-xtitle 1_
-2001/05/07_
-this is the description. it cannot have the symbol_
-ytitle 2_
-2001/05/09_
-this is the description. it can have the symbol !_
-x_
-2001/05/07_
-this is a test to show that a title is not required_
-ytitle 4_
-_
-this is a test to show that a date is not required_
-ythis is a test to show a desc is not required_
-2001/05/07_
-_
-x_
+2
+xNew Entry_
 _
 _
-ytitle 7_
-2001/05/07_
-this is the final entry.
-it is here to show the need for the symbol
-to mark the end of a line_
+xNew Entry_
+_
+_
