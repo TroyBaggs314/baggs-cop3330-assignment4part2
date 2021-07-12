@@ -39,4 +39,4 @@
 ### Edit description:
   To edit the description of an item simply click on the large text area marked "Enter a description here." and begin typing.
   
-*This program is dedicated to "Rey"*
+*Additionally, this program is dedicated to "Rey"*
