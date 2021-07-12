@@ -1,4 +1,4 @@
-![Image of Program](https://imgur.com/hTzPkOA)
+![Image of Program](https://i.imgur.com/hTzPkOA.png)
 
 
 #//README//
